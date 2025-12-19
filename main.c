@@ -21,16 +21,6 @@ int main (int argc, char *argv[]) {
   AttackAccuracy accuracy = {0};
 
 
-  /* List of arguments:
-        -d int => Average Base Damage
-        -ac int (optional) => Armor Class, target number to hit, default 10
-        -criton int (optional) => Critical Hit on which number, default 20
-        -b int (optional) => Attack roll modifier, default 0
-        -graze int (optional) => Missing deals damage equal to int
-        -adv (optional) => Advantage (2d20kh1)
-        -dis (optional) => Disadvantage (2d20kl1)
-        -elf (optional) => Elven Accuracy (3d20kh1)
-  */
   for (int curr_argc = 1; curr_argc < argc; ++curr_argc) {
 
     if (strcmp(argv[curr_argc], "-d") == 0) {
@@ -111,22 +101,28 @@ int main (int argc, char *argv[]) {
 
     if (strcmp(argv[curr_argc], "-elf") == 0) {
       d20.dice_num = 3;
+      dis = false;
       continue;
     }
 
 
     if (strcmp(argv[curr_argc], "-adv") == 0 || strcmp(argv[curr_argc], "-dis") == 0) {
       d20.dice_num = 2;
-      if (strcmp(argv[curr_argc], "-dis") == 0) dis = true;
+      if (strcmp(argv[curr_argc], "-dis") == 0) {
+        dis = true;
+      } else {
+        dis = false;
+      }
       continue;
     }
 
-
   }
 
-  average_damage.crit_damage = average_damage.base_damage * 2;
 
-  accuracy.total_accuracy = ((float)d20.size - (float)d20.dc + 1.0) / (float)d20.size;
+  average_damage.crit_damage = average_damage.base_damage * 2;
+  int to_hit = d20.dc - hit_modifier;
+
+  accuracy.total_accuracy = ((float)d20.size - (float)to_hit + 1.0) / (float)d20.size;
   accuracy.crit_chance = ((float)d20.size - (float)criton + 1.0) / (float)d20.size;
   if (accuracy.total_accuracy < accuracy.crit_chance) accuracy.total_accuracy = accuracy.crit_chance;
   accuracy.normal_hit_chance = accuracy.total_accuracy - accuracy.crit_chance;
