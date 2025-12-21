@@ -1,8 +1,6 @@
 #ifndef DPR_CALC_H
 #define DPR_CALC_H
 
-#define ERR_USAGE "Usage: dpr-calc -d <damage> [-ac <armor class>] [...]\nUse -h for help.\n"
-
 #define ERR_NUMARG "Invalid argument: Must pass a positive number to this argument\n"
 
 #define ERR_ADV "Invalid argument: Can only have one: -adv | -dis | -elf\n"

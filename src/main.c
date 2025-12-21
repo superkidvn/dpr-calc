@@ -8,7 +8,7 @@
 
 int main (int argc, char *argv[]) {
   if (argc < 2) {
-    fprintf(stderr, ERR_USAGE);
+    fprintf(stderr, HELP_STR);
     exit(EXIT_FAILURE);
   }
 
@@ -132,7 +132,7 @@ int main (int argc, char *argv[]) {
 
   // Check for mandatory <-d>
   if (average_damage.base_damage <= 0) {
-    fprintf(stderr, ERR_USAGE);
+    fprintf(stderr, HELP_STR);
     exit(EXIT_FAILURE);
   }
 
