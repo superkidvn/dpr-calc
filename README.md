@@ -2,6 +2,25 @@
 
 This is an exercise, a practice program written in the C programming language. It takes in some command-line arguments and outputs to the terminal the DPR of a D&D 5E creature.
 
+## Building:
+You need the following prerequisites:
+```
+C compiler (gcc or clang)
+make
+```
+Then you can run the following commands to build:
+```
+mkdir build
+make
+```
+If you want to build for Windows using a cross compiler, set CC to the name of that compiler. For example:
+`make CC=x86_64-w64-mingw32ucrt-gcc`
+You can change the build destination with DESTDIR. Remember to create the build directory first. For example, I want to build into a directory called `output`:
+```
+mkdir output
+make DESTDIR=output
+```
+
 ## Usage:
 ```
 dpr-calc -d <base damage> [OPTIONAL COMMANDS]
