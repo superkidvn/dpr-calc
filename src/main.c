@@ -3,17 +3,18 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
-#include <math.h>
-#include "dpr_calc.h"
+#include "dpr-calc.h"
 
 
 int main (int argc, char *argv[]) {
-  if (argc < 2 || argc > 12) {
-    ERR_USAGE;
+  if (argc < 2) {
+    fprintf(stderr, ERR_USAGE);
+    exit(EXIT_FAILURE);
   }
 
   int hit_modifier = 0;
   int criton = 20;
+  int crit_mode = 1; // temporary default value, but real default is 0
   bool dis = false;
   Dice d20 = {1, 20, 10};
   AvgDamage average_damage = {0};
@@ -23,30 +24,29 @@ int main (int argc, char *argv[]) {
 
   for (int curr_argc = 1; curr_argc < argc; ++curr_argc) {
 
+    if (strcmp(argv[curr_argc], "-h") == 0) {
+      printf(HELP_STR);
+      exit(EXIT_SUCCESS);
+    }
+
+
     if (strcmp(argv[curr_argc], "-d") == 0) {
-      if (curr_argc+1 == argc) {
-        ERR_NUMARG;
-      } else if (atoi(argv[curr_argc+1]) == 0) {
-        if (strcmp(argv[curr_argc+1], "0") == 0) {
-          average_damage.base_damage = 0;
-          continue;
-        } else {
-          ERR_NUMARG;
-        }
+      if (curr_argc+1 == argc || atoi(argv[curr_argc+1]) <= 0) {
+        fprintf(stderr, ERR_NUMARG);
+        exit(EXIT_FAILURE);
       }
-      if (atoi(argv[curr_argc+1]) < 0) {
-        ERR_NUMARG;
-      } else {
-        average_damage.base_damage = atoi(argv[curr_argc+1]);
-      }
+
+      average_damage.base_damage = atoi(argv[curr_argc+1]);
       continue;
-    } 
+    }
 
 
     if (strcmp(argv[curr_argc], "-ac") == 0) {
       if (curr_argc+1 == argc || atoi(argv[curr_argc+1]) <= 0) {
         ERR_NUMARG;
+        exit(EXIT_FAILURE);
       }
+
       d20.dc = atoi(argv[curr_argc+1]);
       continue;
     }
@@ -55,7 +55,9 @@ int main (int argc, char *argv[]) {
     if (strcmp(argv[curr_argc], "-criton") == 0) {
       if (curr_argc+1 == argc || atoi(argv[curr_argc+1]) <= 0) {
         ERR_NUMARG;
+        exit(EXIT_FAILURE);
       }
+
       criton = atoi(argv[curr_argc+1]);
       continue;
     }
@@ -63,17 +65,18 @@ int main (int argc, char *argv[]) {
 
     if (strcmp(argv[curr_argc], "-b") == 0) {
       if (curr_argc+1 == argc) {
-        fprintf(stderr, "Invalid Argument: Must pass an integer to this argument\n");
+        fprintf(stderr, ERR_HITMOD);
         exit(EXIT_FAILURE);
-      } else if (atoi(argv[curr_argc+1]) == 0) {
+      }
+      if (atoi(argv[curr_argc+1]) == 0) {
         if (strcmp(argv[curr_argc+1], "0") == 0) {
           hit_modifier = 0;
           continue;
-        } else {
-          fprintf(stderr, "Invalid Argument: Must pass an integer to this argument\n");
-          exit(EXIT_FAILURE);
         }
+        fprintf(stderr, ERR_HITMOD);
+        exit(EXIT_FAILURE);
       }
+
       hit_modifier = atoi(argv[curr_argc+1]);
       continue;
     }
@@ -82,24 +85,28 @@ int main (int argc, char *argv[]) {
     if (strcmp(argv[curr_argc], "-graze") == 0) {
       if (curr_argc+1 == argc) {
         ERR_NUMARG;
-      } else if (atoi(argv[curr_argc+1]) == 0) {
+        exit(EXIT_FAILURE);
+      }
+      if (atoi(argv[curr_argc+1]) <= 0) {
         if (strcmp(argv[curr_argc+1], "0") == 0) {
           average_damage.miss_damage = 0;
           continue;
-        } else {
-          ERR_NUMARG;
         }
-      }
-      if (atoi(argv[curr_argc+1]) < 0) {
         ERR_NUMARG;
-      } else {
-        average_damage.miss_damage = atoi(argv[curr_argc+1]);
+        exit(EXIT_FAILURE);
       }
+
+      average_damage.miss_damage = atoi(argv[curr_argc+1]);
       continue;
     }
 
 
     if (strcmp(argv[curr_argc], "-elf") == 0) {
+      if (d20.dice_num != 1) {
+        ERR_ADV;
+        exit(EXIT_FAILURE);
+      }
+
       d20.dice_num = 3;
       dis = false;
       continue;
@@ -107,6 +114,11 @@ int main (int argc, char *argv[]) {
 
 
     if (strcmp(argv[curr_argc], "-adv") == 0 || strcmp(argv[curr_argc], "-dis") == 0) {
+      if (d20.dice_num != 1) {
+        ERR_ADV;
+        exit(EXIT_FAILURE);
+      }
+
       d20.dice_num = 2;
       if (strcmp(argv[curr_argc], "-dis") == 0) {
         dis = true;
@@ -118,21 +130,53 @@ int main (int argc, char *argv[]) {
 
   }
 
+  // Check for mandatory <-d>
+  if (average_damage.base_damage <= 0) {
+    fprintf(stderr, ERR_USAGE);
+    exit(EXIT_FAILURE);
+  }
 
-  average_damage.crit_damage = average_damage.base_damage * 2;
+
+  /*
+Critical Hit Rule: currently only support crit_mode = 1.
+  Double number of damage dice (vanille 5E):
+      crit_mode = 0 (planned default)
+  Double total damage:
+      crit_mode = 1 (current)
+  Highest damage dice value:
+      crit_mode = 2
+  Double number of damage dice and flat modifiers (3E):
+      crit_mode = 3
+  */
+  switch (crit_mode) {
+    case 0:
+      printf("Rule: Vanilla 5E Critical Hit.\n");
+      break;
+    case 1:
+      average_damage.crit_damage = average_damage.base_damage * 2;
+      break;
+    case 2:
+      printf("Rule: Highest damage dice value.\n");
+      break;
+    case 3:
+      printf("Rule: 3E Critical Hit.\n");
+      break;
+    default:
+      fprintf(stderr, ERR_CRITMODE);
+  }
+
+
+  // The number to roll on the d20 after accounting for attack roll modifier.
   int to_hit = d20.dc - hit_modifier;
 
   accuracy.total_accuracy = ((float)d20.size - (float)to_hit + 1.0) / (float)d20.size;
   accuracy.crit_chance = ((float)d20.size - (float)criton + 1.0) / (float)d20.size;
-  if (accuracy.total_accuracy < accuracy.crit_chance) accuracy.total_accuracy = accuracy.crit_chance;
-  accuracy.normal_hit_chance = accuracy.total_accuracy - accuracy.crit_chance;
-  accuracy.miss_chance = 1.0 - accuracy.total_accuracy;
+  acc_lim(&accuracy);
 
   final_accuracy.total_accuracy = multiroll_acc(accuracy.total_accuracy, d20.dice_num, dis);
   final_accuracy.crit_chance = multiroll_acc(accuracy.crit_chance, d20.dice_num, dis);
-  if (final_accuracy.total_accuracy < final_accuracy.crit_chance) final_accuracy.total_accuracy = final_accuracy.crit_chance;
-  final_accuracy.normal_hit_chance = final_accuracy.total_accuracy - final_accuracy.crit_chance;
   final_accuracy.miss_chance = 1.0 - final_accuracy.total_accuracy;
+  final_accuracy.normal_hit_chance = final_accuracy.total_accuracy - final_accuracy.crit_chance;
 
   float normal_hit_dpr = average_damage.base_damage * final_accuracy.normal_hit_chance;
   float crit_dpr = average_damage.crit_damage * final_accuracy.crit_chance;
@@ -144,5 +188,5 @@ int main (int argc, char *argv[]) {
   printf("Miss DPR: %f\n", miss_dpr);
   printf("Total DPR: %f\n", total_dpr);
 
-  return 0;
+  exit(EXIT_SUCCESS);
 }
