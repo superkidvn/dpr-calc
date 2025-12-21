@@ -3,3 +3,5 @@
 *.obj
 *.pdb
 build/
+.vs/
+.vscode/
