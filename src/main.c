@@ -8,7 +8,7 @@
 
 int main (int argc, char *argv[]) {
   if (argc < 2) {
-    fprintf(stderr, HELP_STR);
+    fputs(HELP_STR, stderr);
     exit(EXIT_FAILURE);
   }
 
@@ -25,14 +25,14 @@ int main (int argc, char *argv[]) {
   for (int curr_argc = 1; curr_argc < argc; ++curr_argc) {
 
     if (strcmp(argv[curr_argc], "-h") == 0) {
-      printf(HELP_STR);
+      puts(HELP_STR);
       exit(EXIT_SUCCESS);
     }
 
 
     if (strcmp(argv[curr_argc], "-d") == 0) {
       if (curr_argc+1 == argc || atoi(argv[curr_argc+1]) <= 0) {
-        fprintf(stderr, ERR_NUMARG);
+        fputs(ERR_NUMARG, stderr);
         exit(EXIT_FAILURE);
       }
 
@@ -43,7 +43,7 @@ int main (int argc, char *argv[]) {
 
     if (strcmp(argv[curr_argc], "-ac") == 0) {
       if (curr_argc+1 == argc || atoi(argv[curr_argc+1]) <= 0) {
-        ERR_NUMARG;
+        fputs(ERR_NUMARG, stderr);
         exit(EXIT_FAILURE);
       }
 
@@ -54,7 +54,7 @@ int main (int argc, char *argv[]) {
 
     if (strcmp(argv[curr_argc], "-criton") == 0) {
       if (curr_argc+1 == argc || atoi(argv[curr_argc+1]) <= 0) {
-        ERR_NUMARG;
+        fputs(ERR_NUMARG, stderr);
         exit(EXIT_FAILURE);
       }
 
@@ -65,7 +65,7 @@ int main (int argc, char *argv[]) {
 
     if (strcmp(argv[curr_argc], "-b") == 0) {
       if (curr_argc+1 == argc) {
-        fprintf(stderr, ERR_HITMOD);
+        fputs(ERR_HITMOD, stderr);
         exit(EXIT_FAILURE);
       }
       if (atoi(argv[curr_argc+1]) == 0) {
@@ -73,7 +73,7 @@ int main (int argc, char *argv[]) {
           hit_modifier = 0;
           continue;
         }
-        fprintf(stderr, ERR_HITMOD);
+        fputs(ERR_HITMOD, stderr);
         exit(EXIT_FAILURE);
       }
 
@@ -84,7 +84,7 @@ int main (int argc, char *argv[]) {
 
     if (strcmp(argv[curr_argc], "-graze") == 0) {
       if (curr_argc+1 == argc) {
-        ERR_NUMARG;
+        fputs(ERR_NUMARG, stderr);
         exit(EXIT_FAILURE);
       }
       if (atoi(argv[curr_argc+1]) <= 0) {
@@ -92,7 +92,7 @@ int main (int argc, char *argv[]) {
           average_damage.miss_damage = 0;
           continue;
         }
-        ERR_NUMARG;
+        fputs(ERR_NUMARG, stderr);
         exit(EXIT_FAILURE);
       }
 
@@ -103,7 +103,7 @@ int main (int argc, char *argv[]) {
 
     if (strcmp(argv[curr_argc], "-elf") == 0) {
       if (d20.dice_num != 1) {
-        ERR_ADV;
+        fputs(ERR_ADV, stderr);
         exit(EXIT_FAILURE);
       }
 
@@ -115,7 +115,7 @@ int main (int argc, char *argv[]) {
 
     if (strcmp(argv[curr_argc], "-adv") == 0 || strcmp(argv[curr_argc], "-dis") == 0) {
       if (d20.dice_num != 1) {
-        ERR_ADV;
+        fputs(ERR_ADV, stderr);
         exit(EXIT_FAILURE);
       }
 
@@ -132,7 +132,7 @@ int main (int argc, char *argv[]) {
 
   // Check for mandatory <-d>
   if (average_damage.base_damage <= 0) {
-    fprintf(stderr, HELP_STR);
+    fputs(HELP_STR, stderr);
     exit(EXIT_FAILURE);
   }
 
@@ -150,19 +150,19 @@ Critical Hit Rule: currently only support crit_mode = 1.
   */
   switch (crit_mode) {
     case 0:
-      printf("Rule: Vanilla 5E Critical Hit.\n");
+      puts("Rule: Vanilla 5E Critical Hit.");
       break;
     case 1:
       average_damage.crit_damage = average_damage.base_damage * 2;
       break;
     case 2:
-      printf("Rule: Highest damage dice value.\n");
+      puts("Rule: Highest damage dice value.");
       break;
     case 3:
-      printf("Rule: 3E Critical Hit.\n");
+      puts("Rule: 3E Critical Hit.");
       break;
     default:
-      fprintf(stderr, ERR_CRITMODE);
+      fputs(ERR_CRITMODE, stderr);
   }
 
 
