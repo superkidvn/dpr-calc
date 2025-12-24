@@ -53,8 +53,8 @@ int main (int argc, char *argv[]) {
 
 
     if (strcmp(argv[curr_argc], "-criton") == 0) {
-      if (curr_argc+1 == argc || atoi(argv[curr_argc+1]) <= 0) {
-        fputs(ERR_NUMARG, stderr);
+      if (curr_argc+1 == argc || atoi(argv[curr_argc+1]) < 2 || atoi(argv[curr_argc+1]) > 20) {
+        fputs(ERR_CRITON, stderr);
         exit(EXIT_FAILURE);
       }
 

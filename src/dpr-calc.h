@@ -7,6 +7,8 @@
 
 #define ERR_HITMOD "Invalid Argument: Must pass a number to this argument\n"
 
+#define ERR_CRITON "Invalid argument: Must be from 2 to 20.\n"
+
 #define ERR_MULTIROLL "Error: Attack has Disadvantage, but the number of d20 rolls isn't 2\n"
 
 #define ERR_CRITMODE "Error: Can't set Critical Hit rule.\n"
