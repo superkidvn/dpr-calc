@@ -18,7 +18,6 @@ int main (int argc, char *argv[]) {
   bool dis = false;
   Dice d20 = {1, 20, 10};
   AvgDamage average_damage = {0};
-  AttackAccuracy final_accuracy = {0};
   AttackAccuracy accuracy = {0};
 
 
@@ -173,14 +172,14 @@ Critical Hit Rule: currently only support crit_mode = 1.
   accuracy.crit_chance = ((float)d20.size - (float)criton + 1.0) / (float)d20.size;
   acc_lim(&accuracy);
 
-  final_accuracy.total_accuracy = multiroll_acc(accuracy.total_accuracy, d20.dice_num, dis);
-  final_accuracy.crit_chance = multiroll_acc(accuracy.crit_chance, d20.dice_num, dis);
-  final_accuracy.miss_chance = 1.0 - final_accuracy.total_accuracy;
-  final_accuracy.normal_hit_chance = final_accuracy.total_accuracy - final_accuracy.crit_chance;
+  accuracy.total_accuracy = multiroll_acc(accuracy.total_accuracy, d20.dice_num, dis);
+  accuracy.crit_chance = multiroll_acc(accuracy.crit_chance, d20.dice_num, dis);
+  accuracy.miss_chance = 1.0 - accuracy.total_accuracy;
+  accuracy.normal_hit_chance = accuracy.total_accuracy - accuracy.crit_chance;
 
-  float normal_hit_dpr = average_damage.base_damage * final_accuracy.normal_hit_chance;
-  float crit_dpr = average_damage.crit_damage * final_accuracy.crit_chance;
-  float miss_dpr = average_damage.miss_damage * final_accuracy.miss_chance;
+  float normal_hit_dpr = average_damage.base_damage * accuracy.normal_hit_chance;
+  float crit_dpr = average_damage.crit_damage * accuracy.crit_chance;
+  float miss_dpr = average_damage.miss_damage * accuracy.miss_chance;
   float total_dpr = normal_hit_dpr + crit_dpr + miss_dpr;
 
   printf("Normal Hit DPR: %f\n", normal_hit_dpr);

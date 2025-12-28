@@ -13,7 +13,7 @@ unsigned int avg_dmg(unsigned int min, unsigned int max) {
 
 float multiroll_acc(float a, int e, bool dis) {
   if (dis == true && e != 2) {
-    fprintf(stderr, ERR_MULTIROLL);
+    fputs(ERR_MULTIROLL, stderr);
     exit(EXIT_FAILURE);
   }
 
