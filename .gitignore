@@ -5,3 +5,6 @@
 build/
 .vs/
 .vscode/
+test/**
+!test.sh
+!dpr-sample.txt

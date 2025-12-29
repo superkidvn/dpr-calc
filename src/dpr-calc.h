@@ -9,7 +9,7 @@
 
 #define ERR_CRITON "Invalid argument: Must be from 2 to 20.\n"
 
-#define ERR_MULTIROLL "Error: Attack has Disadvantage, but the number of d20 rolls isn't 2\n"
+#define ERR_MULTIROLL "Error: Invalid exponent.\n"
 
 #define ERR_CRITMODE "Error: Can't set Critical Hit rule.\n"
 
@@ -56,7 +56,7 @@ typedef struct AttackAccuracy {
 
 /* avg_dmg is declared and defined, but not yet used */
 unsigned int avg_dmg(unsigned int min, unsigned int max);
-float multiroll_acc(float a, int e, bool dis);
+float multiroll_acc(float a, int num_roll, bool dis);
 void acc_lim(AttackAccuracy *accuracy);
 
 #endif

@@ -5,7 +5,7 @@ all: dpr-calc
 
 dpr-calc: main.c dpr-calc.c
 	mkdir -p $(DESTDIR)/bin
-	$(CC) -lm -o $(DESTDIR)/bin/dpr-calc $(DESTDIR)/main.o $(DESTDIR)/dpr-calc.o
+	$(CC) -o $(DESTDIR)/bin/dpr-calc $(DESTDIR)/main.o $(DESTDIR)/dpr-calc.o
 
 main.c:
 	$(CC) -c -o $(DESTDIR)/main.o src/main.c

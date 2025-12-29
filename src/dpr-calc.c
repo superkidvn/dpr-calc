@@ -1,5 +1,4 @@
 #include <stdbool.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "dpr-calc.h"
@@ -11,18 +10,47 @@ unsigned int avg_dmg(unsigned int min, unsigned int max) {
 }
 
 
-float multiroll_acc(float a, int e, bool dis) {
-  if (dis == true && e != 2) {
+float multiroll_acc(float a, int num_roll, bool dis) {
+  if (dis == true && num_roll != 2) {
     fputs(ERR_MULTIROLL, stderr);
     exit(EXIT_FAILURE);
   }
 
   float result;
   if (dis == true) {
-    result = 1.0 - (1.0 - pow(a, (float)e));
-    return result;
+    switch (num_roll) {
+      case 1:
+        result = 1.0 - (1.0 - a);
+        break;
+      case 2:
+        result = 1.0 - (1.0 - a*a);
+        break;
+      case 3:
+        result = 1.0 - (1.0 - a*a*a);
+        break;
+      default:
+        fputs(ERR_MULTIROLL, stderr);
+        exit(EXIT_FAILURE);
+    }
+  } else {
+    switch (num_roll) {
+      case 1:
+        result = 1.0 - (1.0 - a);
+        break;
+      case 2:
+        result = (1.0 - a)*(1.0 - a);
+        result = 1.0 - result;
+        break;
+      case 3:
+        result = (1.0 - a)*(1.0 - a)*(1.0 - a);
+        result = 1.0 - result;
+        break;
+      default:
+        fputs(ERR_MULTIROLL, stderr);
+        exit(EXIT_FAILURE);
+    }
   }
-  result = 1.0 - pow(1.0 - a, (float)e);
+
   return result;
 }
 

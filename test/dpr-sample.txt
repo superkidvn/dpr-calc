@@ -1,0 +1,59 @@
+Normal Hit DPR: 7.200000
+Critical Hit DPR: 1.200000
+Miss DPR: 0.000000
+Total DPR: 8.400000
+
+Normal Hit DPR: 9.360000
+Critical Hit DPR: 2.340001
+Miss DPR: 0.000000
+Total DPR: 11.700001
+
+Normal Hit DPR: 5.039999
+Critical Hit DPR: 0.060000
+Miss DPR: 0.000000
+Total DPR: 5.099999
+
+Normal Hit DPR: 9.774000
+Critical Hit DPR: 3.422999
+Miss DPR: 0.000000
+Total DPR: 13.197000
+
+Normal Hit DPR: 10.799999
+Critical Hit DPR: 1.200000
+Miss DPR: 0.000000
+Total DPR: 11.999999
+
+Normal Hit DPR: 10.799999
+Critical Hit DPR: 2.340001
+Miss DPR: 0.000000
+Total DPR: 13.139999
+
+Normal Hit DPR: 10.799999
+Critical Hit DPR: 0.060000
+Miss DPR: 0.000000
+Total DPR: 10.860000
+
+Normal Hit DPR: 10.287001
+Critical Hit DPR: 3.422999
+Miss DPR: 0.000000
+Total DPR: 13.710000
+
+Normal Hit DPR: 0.000000
+Critical Hit DPR: 1.200000
+Miss DPR: 0.000000
+Total DPR: 1.200000
+
+Normal Hit DPR: 0.000000
+Critical Hit DPR: 2.340001
+Miss DPR: 0.000000
+Total DPR: 2.340001
+
+Normal Hit DPR: 0.000000
+Critical Hit DPR: 0.060000
+Miss DPR: 0.000000
+Total DPR: 0.060000
+
+Normal Hit DPR: 0.000000
+Critical Hit DPR: 3.422999
+Miss DPR: 0.000000
+Total DPR: 3.422999
