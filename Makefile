@@ -3,14 +3,14 @@ DESTDIR=build
 
 all: dpr-calc
 
-dpr-calc: main.c dpr-calc.c
+dpr-calc: main.o dpr-calc.o
 	mkdir -p $(DESTDIR)/bin
 	$(CC) -o $(DESTDIR)/bin/dpr-calc $(DESTDIR)/main.o $(DESTDIR)/dpr-calc.o
 
-main.c:
+main.o: main.c dpr-calc.h
 	$(CC) -c -o $(DESTDIR)/main.o src/main.c
 
-dpr-calc.c:
+dpr-calc.o: dpr-calc.c dpr-calc.h
 	$(CC) -c -o $(DESTDIR)/dpr-calc.o src/dpr-calc.c
 
 cleanup:
