@@ -11,6 +11,10 @@ unsigned int avg_dmg(unsigned int min, unsigned int max) {
 
 
 float multiroll_acc(float a, int num_roll, bool dis) {
+  if (num_roll > 3 || num_roll < 1) {
+    fputs(ERR_MULTIROLL, stderr);
+    exit(EXIT_FAILURE);
+  }
   if (dis == true && num_roll != 2) {
     fputs(ERR_MULTIROLL, stderr);
     exit(EXIT_FAILURE);
@@ -18,20 +22,7 @@ float multiroll_acc(float a, int num_roll, bool dis) {
 
   float result;
   if (dis == true) {
-    switch (num_roll) {
-      case 1:
-        result = 1.0 - (1.0 - a);
-        break;
-      case 2:
-        result = 1.0 - (1.0 - a*a);
-        break;
-      case 3:
-        result = 1.0 - (1.0 - a*a*a);
-        break;
-      default:
-        fputs(ERR_MULTIROLL, stderr);
-        exit(EXIT_FAILURE);
-    }
+    result = 1.0 - (1.0 - a*a);
   } else {
     switch (num_roll) {
       case 1:
