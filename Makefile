@@ -1,9 +1,9 @@
 CC=gcc
 DESTDIR=build
 
-all: $(DESTDIR)/dpr-calc
+all: $(DESTDIR)/bin/dpr-calc
 
-$(DESTDIR)/dpr-calc: $(DESTDIR)/main.o $(DESTDIR)/dpr-calc.o
+$(DESTDIR)/bin/dpr-calc: $(DESTDIR)/main.o $(DESTDIR)/dpr-calc.o
 	mkdir -p $(DESTDIR)/bin
 	$(CC) -o $(DESTDIR)/bin/dpr-calc $(DESTDIR)/main.o $(DESTDIR)/dpr-calc.o
 
